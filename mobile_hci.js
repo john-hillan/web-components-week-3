@@ -12,6 +12,10 @@
 class GridComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      columnText1: props.columnText1,
+      columnText2: props.columnText2,
+      columnText3: props.columnText3};
   }
 
   render() {
@@ -19,13 +23,13 @@ class GridComponent extends React.Component {
       <div class="container text-center position-relative top-0 start-25">
         <div class="row">
           <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 p-3 align-middle align-self-center">
-            This is the content for column 1 which is relatively brief
+            {this.state.columnText1}
           </div>
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 p-3 align-middle align-self-center">
-            This is the content for column 2 which will normally be slightly longer than the left hand column
+            {this.state.columnText2}
           </div>
           <div class="col-xs-4 col-sm-5 col-md-6 col-lg-7 p-3 align-middle align-self-center">
-            This is the content for column 3 which is meant to be where much longer pieces of text such as full reviews can be placed as opposed to the first two fields which could be an index and a summary
+            {this.state.columnText3}
           </div>
         </div>
       </div>
@@ -37,10 +41,17 @@ class GridComponent extends React.Component {
 
 function App() {
 
+  const columnText1 = "This is the content for column 1 which is relatively brief";
+  const columnText2 = "This is the content for column 2 which will normally be slightly longer than the left hand column";
+  const columnText3 = "This is the content for column 3 which is meant to be where much longer pieces of text such as full reviews can be placed as opposed to the first two fields which could be an index and a summary";
+
   return (
     <div className="App">
       <br />
-      <GridComponent />
+      <GridComponent
+        columnText1={columnText1}
+        columnText2={columnText2}
+        columnText3={columnText3}/>
     </div>
   );
 }
