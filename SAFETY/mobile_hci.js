@@ -20,15 +20,15 @@ class GridComponent extends React.Component {
 
   render() {
     return (
-      <div className="container text-center position-relative top-0 start-25">
-        <div className="row">
-          <div className="col-xs-4 col-sm-3 col-md-2 col-lg-2 p-3 align-middle align-self-center">
+      <div class="container text-center position-relative top-0 start-25">
+        <div class="row">
+          <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 p-3 align-middle align-self-center">
             {this.state.columnText1}
           </div>
-          <div className="col-xs-4 col-sm-4 col-md-4 col-lg-3 p-3 align-middle align-self-center">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 p-3 align-middle align-self-center">
             {this.state.columnText2}
           </div>
-          <div className="col-xs-4 col-sm-5 col-md-6 col-lg-7 p-3 align-middle align-self-center">
+          <div class="col-xs-4 col-sm-5 col-md-6 col-lg-7 p-3 align-middle align-self-center">
             {this.state.columnText3}
           </div>
         </div>
@@ -51,7 +51,7 @@ function App() {
       <GridComponent
         columnText1={columnText1}
         columnText2={columnText2}
-        columnText3={columnText3} />
+        columnText3={columnText3}/>
     </div>
   );
 }
