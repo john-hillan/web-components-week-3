@@ -1,0 +1,16 @@
+/* CSS file for Mobile HCI */
+
+.App {
+  color: black;
+}
+
+.row {
+  background-color: blue;
+}
+
+.col-xs-4 {
+  color: black;
+  outline-style: ridge;
+  outline-color: green;
+  outline-offset: -10px;
+}
