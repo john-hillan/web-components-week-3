@@ -61,7 +61,6 @@ class LoginForm extends React.Component {
 
   handleUserNameChange(userNameEvent) {
     const userName = userNameEvent.target.value;
-    console.log("handleUsernameChange " + userName);
     this.setState(
       {userName: userName,
        password: this.state.password,
@@ -70,7 +69,6 @@ class LoginForm extends React.Component {
 
   handlePasswordChange(passwordEvent) {
     const password = passwordEvent.target.value;
-    console.log("handlePasswordChange " + password);
     this.setState(
       {userName: this.state.userName,
        password: password,
@@ -79,7 +77,6 @@ class LoginForm extends React.Component {
 
   handleRememberUsernameChange(rememberUsernameEvent) {
     const rememberUsername = rememberUsernameEvent.target.checked;
-    console.log("handleRememberUsernameChange " + rememberUsername);
     this.setState(
       {userName: this.state.userName,
        password: this.state.password,
@@ -151,11 +148,14 @@ class LogoutForm extends React.Component {
 
   render() {
     return(
-      <button
-        type="submit" className="btn btn-primary"
-        onClick={this.handleSubmitClick}>
-        Log Out
-      </button>
+      <div>
+        <p>Logged in as {this.props.loggedInAs}</p>
+        <button
+          type="submit" className="btn btn-primary"
+          onClick={this.handleSubmitClick}>
+          Log Out
+        </button>
+      </div>
     );
   }
 }
@@ -173,13 +173,14 @@ class LoginLogout extends React.Component {
 
   handleLogoutFormSubmitClick(logout) {
     event.preventDefault();
-    alert("Logout complete");
     this.props.onSuccessfulLogout();
   }
 
   checkUserNameAndPassword (userName, password) {
-    // MISSING
-    const loginSuccessful = ((userName === "John") && (password === "myPassword"));
+    // MISSING FUNCTIONALITY
+    let loginSuccessful = false;
+    loginSuccessful |= ((userName === "John")  && (password === "john"));
+    loginSuccessful |= ((userName === "Janet") && (password === "janet"));
     return (loginSuccessful);
   }
 
@@ -188,11 +189,7 @@ class LoginLogout extends React.Component {
     // Check that the username/password is valid
     const loginSuccessful = this.checkUserNameAndPassword (userName, password);
     if (loginSuccessful) {
-      alert("Login form submitted" +
-            "\n  user name '" + userName + "'" +
-            "\n  password  '" + password + "'" +
-            "\n  remember  "  + rememberUsername);
-      this.props.onSuccessfulLogin();
+      this.props.onSuccessfulLogin(userName);
     } else {
       alert("Invalid username/password. Please try again.");
     }
@@ -200,9 +197,12 @@ class LoginLogout extends React.Component {
 
   render() {
     const LoginOrLogout =
-      this.props.loggedIn ?
-      <LogoutForm onSubmitClick={this.handleLogoutFormSubmitClick} /> :
-      <LoginForm  onSubmitClick={this.handleLoginFormSubmitClick} />;
+      this.props.loggedInAs ?
+      <LogoutForm
+        onSubmitClick={this.handleLogoutFormSubmitClick}
+        loggedInAs={this.props.loggedInAs} /> :
+      <LoginForm
+        onSubmitClick={this.handleLoginFormSubmitClick} />;
     return (LoginOrLogout);
   }
 }
@@ -210,44 +210,71 @@ class LoginLogout extends React.Component {
 // Image Carousel
 
 class ImageCarousel extends React.Component {
+
   constructor(props) {
     super(props);
   }
 
-  renderImages(imageFileList) {
-    let divs = [];
-    for (let index = 0; index < imageFileList.length; index++) {
+  carouselId = "imageCarousel";
+  carouselIdRef = "#" + this.carouselId;
+
+  renderImages() {
+    let renderedImageList = [];
+    for (let index = 0; index < this.props.imageFileList.length; index++) {
       const itemClassName = (index === 0) ? "carousel-item active" : "carousel-item";
-      const itemSource = imageFileList[index];
-      console.log(itemSource);
-      divs.push (<div className={itemClassName} key={index}> <img src={itemSource} className="img-fluid" /> </div>)
+      const itemSource = this.props.imageFileList[index];
+      renderedImageList.push (<div className={itemClassName} key={index}> <img src={itemSource} className="img-fluid" /> </div>)
     }
-    return (divs);
+    return (renderedImageList);
+  }
+
+  renderIndicators() {
+    let renderedIndicatorsList = [];
+    for (let index = 0; index < this.props.imageFileList.length; index++) {
+      const slideToText = toString(index);
+      const ariaLabel = "Slide " + (index + 1);
+      const itemClassName   = (index === 0) ? "active" : "inactive";
+      const itemAriaCurrent = (index === 0) ? "true" : "false";
+      renderedIndicatorsList.push (<button key={index} type="button" data-bs-target={this.carouselIdRef} data-bs-slide-to={index} className={itemClassName} aria-current={itemAriaCurrent} aria-label={ariaLabel} />);
+    }
+    return (renderedIndicatorsList);
+  }
+
+  renderControlPrev() {
+    return (
+      <button className="carousel-control-prev" type="button" data-bs-target={this.carouselIdRef} data-bs-slide="prev">
+        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span className="visually-hidden">Previous</span>
+      </button>
+    );
+  }
+
+  renderControlNext() {
+    return (
+      <button className="carousel-control-next" type="button" data-bs-target={this.carouselIdRef} data-bs-slide="next">
+        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+        <span className="visually-hidden">Next</span>
+      </button>
+    );
   }
 
   render() {
 
-    const imageFileList = ["troilus-and-cressida-rsc.jpg", "julius-caesar-rsc.jpg", "the-merry-wives-of-windsor.jpg", "richard-ii-rsc.jpg"];
-    const renderedImageList = this.renderImages(imageFileList);
+    const renderedImageList = this.renderImages();
+    const renderedIndicatorsList = this.renderIndicators();
+    const renderedControlPrev = this.renderControlPrev();
+    const renderedControlNext = this.renderControlNext();
     return (
       <div className="container text-center position-relative top-0 start-25">
-        <div id="imageCarousel" className="carousel slide">
+        <div id={this.carouselId} className="carousel slide">
           <div className="carousel-indicators">
-            <button type="button" data-bs-target="#imageCarouselIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#imageCarouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#imageCarouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            {renderedIndicatorsList}
           </div>
           <div className="carousel-inner">
             {renderedImageList}
           </div>
-          <button className="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button className="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
-          </button>
+          {renderedControlPrev}
+          {renderedControlNext}
         </div>
       </div>
     );
@@ -269,13 +296,13 @@ class GridComponent extends React.Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  handleLogin(e) {
+  handleLogin(userName) {
     event.preventDefault();
-    console.log("GridComponent handleLogin");
-    this.props.onLogin();
+    console.log("GridComponent handleLogin " + userName);
+    this.props.onLogin(userName);
   }
 
-  handleLogout(e) {
+  handleLogout() {
     event.preventDefault();
     console.log("GridComponent handleLogout");
     this.props.onLogout();
@@ -294,7 +321,7 @@ class GridComponent extends React.Component {
           </div>
           <div className="col-xs-4 col-sm-5 col-md-6 col-lg-7 p-3 align-middle align-self-center">
             <LoginLogout
-              loggedIn={this.props.loggedIn}
+              loggedInAs={this.props.loggedInAs}
               onSuccessfulLogin={this.handleLogin}
               onSuccessfulLogout={this.handleLogout} />
           </div>
@@ -309,40 +336,53 @@ class GridComponent extends React.Component {
 class ShakespeareSinglePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {loggedIn: false};
+    this.state = {
+      loggedInAs: "",
+      imageDictionary: {
+        "John":  ["troilus-and-cressida-rsc.jpg",
+                  "julius-caesar-rsc.jpg"],
+        "Janet": ["the-merry-wives-of-windsor.jpg",
+                  "richard-ii-rsc.jpg",
+                  "macbeth-rsc.jpg"]
+      }
+    };
     this.handleLogin  = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  handleLogin(e) {
+  handleLogin(userName) {
     event.preventDefault();
-    console.log("ShakespeareSinglePage handleLogin");
-    this.setState({loggedIn: true});
+    console.log("ShakespeareSinglePage handleLogin " + userName);
+    this.setState({loggedInAs: userName});
   }
 
   handleLogout(e) {
     event.preventDefault();
     console.log("ShakespeareSinglePage handleLogout");
-    this.setState({loggedIn: false});
+    this.setState({loggedInAs: ""});
   }
 
   render() {
 
+    const imageFileList = this.state.imageDictionary[this.state.loggedInAs];
+
     const MainContent =
-      this.state.loggedIn ?
+      this.state.loggedInAs ?
         <div className="container-fluid text-center position-relative top-0 start-25">
           <br />
           Here are your uploaded images
-          <ImageCarousel />
+          <ImageCarousel imageFileList={imageFileList} />
         </div> :
-        <div className="container-fluid text-center position-relative top-0 start-25">Please log in to see your uploaded images</div>;
+        <div className="container-fluid text-center position-relative top-0 start-25">
+          Please log in to see your uploaded images
+        </div>;
 
     return (
       <div className="ShakespeareSinglePage">
         <NavigationBar />
         <br />
         <GridComponent
-          loggedIn={this.state.loggedIn}
+          loggedInAs={this.state.loggedInAs}
           onLogin={this.handleLogin}
           onLogout={this.handleLogout} />
         {MainContent}
