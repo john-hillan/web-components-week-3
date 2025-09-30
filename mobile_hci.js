@@ -392,6 +392,8 @@ class GridComponent extends React.Component {
         <div className="row">
           <div className="col-xs-4 col-sm-3 col-md-2 col-lg-2 p-3 align-middle align-self-center">
             Welcome to John Hillan's William Shakespeare Page
+            <br />
+            <OffCanvasHelp />
           </div>
           <div className="col-xs-4 col-sm-4 col-md-4 col-lg-3 p-3 align-middle align-self-center">
             <img src="Shakespeare.jpg" className="img-thumbnail" />
@@ -401,6 +403,42 @@ class GridComponent extends React.Component {
               loggedInAs={this.props.loggedInAs}
               onSuccessfulLogin={this.handleLogin}
               onSuccessfulLogout={this.handleLogout} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+// Off Canvas Help component
+
+class OffCanvasHelp extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className="container-fluid text-center position-relative top-0 start-25">
+        <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasHelp" aria-controls="offcanvasHelp">
+          Help
+        </button>
+
+        <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasHelp" aria-labelledby="offcanvasHelpLabel">
+          <div className="offcanvas-header">
+            <h5 className="offcanvas-title" id="offcanvasHelpLabel">Help</h5>
+            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div className="offcanvas-body">
+            <p>This website is a treasure trove of information about the plays of William Shakespeare created by enthusiasts for enthusiasts to enjoy.</p>
+            <p>If you have an account, you can log in and use the website to create, read, update, and delete images of performances you have enjoyed.</p>
+            <br />
+            <br />
+            <div className="list-group text-start">
+              <p>"No profit grows where no pleasure is taken."</p>
+              <p className="fst-italic">'The Taming Of The Shrew' (1592) act 1, sc. 1, l. 39</p>
+            </div>
           </div>
         </div>
       </div>

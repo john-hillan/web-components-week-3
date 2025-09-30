@@ -15,27 +15,6 @@
   outline-offset: -10px;
 }
 
-.carousel-item-example {
-  color: black;
-}
-
-.carousel-inner-example {
-  padding: 2rem;
-  margin: auto;
-}
-
-.carousel-controls-example {
-  position: relative; 
-  width: 300px;
-  margin: 0 auto;
-}
-
-.carousel-indicators-example {
-   position: relative;
-   color: red;
-   margin: 0;
-}
-
 .play-categories {
   background-color: lightgreen;
   outline-style: solid;
