@@ -14,3 +14,16 @@
   outline-color: green;
   outline-offset: -10px;
 }
+
+.carousel-item {
+  color: black;
+}
+
+.carousel-inner {
+  padding: 2rem;
+  margin: auto;
+}
+
+.carousel-indicators {
+  margin-bottom: -10;
+}

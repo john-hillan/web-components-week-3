@@ -214,9 +214,23 @@ class ImageCarousel extends React.Component {
     super(props);
   }
 
-  render() {
-    return (
+  renderImages(imageFileList) {
+    let divs = [];
+    for (let index = 0; index < imageFileList.length; index++) {
+      const itemClassName = (index === 0) ? "carousel-item active" : "carousel-item";
+      const itemSource = imageFileList[index];
+      console.log(itemSource);
+      divs.push (<div className={itemClassName} key={index}> <img src={itemSource} className="img-fluid" /> </div>)
+    }
+    return (divs);
+  }
 
+  render() {
+
+    const imageFileList = ["troilus-and-cressida-rsc.jpg", "julius-caesar-rsc.jpg", "the-merry-wives-of-windsor.jpg", "richard-ii-rsc.jpg"];
+    const renderedImageList = this.renderImages(imageFileList);
+    return (
+      <div className="container text-center position-relative top-0 start-25">
         <div id="imageCarousel" className="carousel slide">
           <div className="carousel-indicators">
             <button type="button" data-bs-target="#imageCarouselIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
@@ -224,15 +238,7 @@ class ImageCarousel extends React.Component {
             <button type="button" data-bs-target="#imageCarouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
           </div>
           <div className="carousel-inner">
-            <div className="carousel-item active">
-              <img src="troilus-and-cressida-rsc.jpg" className="img-thumbnail" />
-            </div>
-            <div className="carousel-item">
-              <img src="julius-caesar-rsc.jpg" className="img-thumbnail" />
-            </div>
-            <div className="carousel-item">
-              <img src="the-merry-wives-of-windsor.jpg" className="img-thumbnail" />
-            </div>
+            {renderedImageList}
           </div>
           <button className="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -243,6 +249,7 @@ class ImageCarousel extends React.Component {
             <span className="visually-hidden">Next</span>
           </button>
         </div>
+      </div>
     );
   }
 }
@@ -276,15 +283,6 @@ class GridComponent extends React.Component {
 
   render() {
 
-    const MainContent =
-      this.props.loggedIn ?
-        <div>
-          <br />
-          Here are your uploaded images
-          <ImageCarousel />
-        </div> :
-        <div>Please log in to see your uploaded images</div>;
-
     return (
       <div className="container-fluid text-center position-relative top-0 start-25">
         <div className="row">
@@ -301,9 +299,6 @@ class GridComponent extends React.Component {
               onSuccessfulLogout={this.handleLogout} />
           </div>
         </div>
-        <div className="main-content">
-          {MainContent}
-        </div>
       </div>
     );
   }
@@ -314,7 +309,7 @@ class GridComponent extends React.Component {
 class ShakespeareSinglePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {loggedIn: true};
+    this.state = {loggedIn: false};
     this.handleLogin  = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
@@ -332,6 +327,16 @@ class ShakespeareSinglePage extends React.Component {
   }
 
   render() {
+
+    const MainContent =
+      this.state.loggedIn ?
+        <div className="container-fluid text-center position-relative top-0 start-25">
+          <br />
+          Here are your uploaded images
+          <ImageCarousel />
+        </div> :
+        <div className="container-fluid text-center position-relative top-0 start-25">Please log in to see your uploaded images</div>;
+
     return (
       <div className="ShakespeareSinglePage">
         <NavigationBar />
@@ -340,6 +345,7 @@ class ShakespeareSinglePage extends React.Component {
           loggedIn={this.state.loggedIn}
           onLogin={this.handleLogin}
           onLogout={this.handleLogout} />
+        {MainContent}
       </div>
     );
   }
