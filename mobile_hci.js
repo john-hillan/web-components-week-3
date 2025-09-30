@@ -151,11 +151,11 @@ class LogoutForm extends React.Component {
 
   render() {
     return(
-        <button
-          type="submit" className="btn btn-primary"
-          onClick={this.handleSubmitClick}>
-          Log Out
-        </button>
+      <button
+        type="submit" className="btn btn-primary"
+        onClick={this.handleSubmitClick}>
+        Log Out
+      </button>
     );
   }
 }
@@ -207,6 +207,46 @@ class LoginLogout extends React.Component {
   }
 }
 
+// Image Carousel
+
+class ImageCarousel extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+
+        <div id="imageCarousel" className="carousel slide">
+          <div className="carousel-indicators">
+            <button type="button" data-bs-target="#imageCarouselIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#imageCarouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#imageCarouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div className="carousel-inner">
+            <div className="carousel-item active">
+              <img src="troilus-and-cressida-rsc.jpg" className="img-thumbnail" />
+            </div>
+            <div className="carousel-item">
+              <img src="julius-caesar-rsc.jpg" className="img-thumbnail" />
+            </div>
+            <div className="carousel-item">
+              <img src="the-merry-wives-of-windsor.jpg" className="img-thumbnail" />
+            </div>
+          </div>
+          <button className="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button className="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Next</span>
+          </button>
+        </div>
+    );
+  }
+}
+
 // Grid component
 // - column is col-<screen size>-<number out of 12 to use>
 // - screen size is
@@ -218,18 +258,9 @@ class LoginLogout extends React.Component {
 class GridComponent extends React.Component {
   constructor(props) {
     super(props);
-    //// Handler for login form submit button change
-    //this.handleLoginFormSubmitClick = this.handleLoginFormSubmitClick.bind(this);
     this.handleLogin  = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
-
-  //handleLoginFormSubmitClick(userName, password, rememberUsername) {
-  //  alert("Login form submitted" +
-  //        "\n  user name '" + userName + "'" +
-  //        "\n  password  '" + password + "'" +
-  //        "\n  remember  "  + rememberUsername);
-  //}
 
   handleLogin(e) {
     event.preventDefault();
@@ -244,6 +275,16 @@ class GridComponent extends React.Component {
   }
 
   render() {
+
+    const MainContent =
+      this.props.loggedIn ?
+        <div>
+          <br />
+          Here are your uploaded images
+          <ImageCarousel />
+        </div> :
+        <div>Please log in to see your uploaded images</div>;
+
     return (
       <div className="container-fluid text-center position-relative top-0 start-25">
         <div className="row">
@@ -254,8 +295,14 @@ class GridComponent extends React.Component {
             <img src="Shakespeare.jpg" className="img-thumbnail" />
           </div>
           <div className="col-xs-4 col-sm-5 col-md-6 col-lg-7 p-3 align-middle align-self-center">
-            <LoginLogout loggedIn={this.props.loggedIn} onSuccessfulLogin={this.handleLogin} onSuccessfulLogout={this.handleLogout} />
+            <LoginLogout
+              loggedIn={this.props.loggedIn}
+              onSuccessfulLogin={this.handleLogin}
+              onSuccessfulLogout={this.handleLogout} />
           </div>
+        </div>
+        <div className="main-content">
+          {MainContent}
         </div>
       </div>
     );
@@ -267,17 +314,10 @@ class GridComponent extends React.Component {
 class ShakespeareSinglePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {loggedIn: false};
-    //this.handleLoginChange = this.handleLoginChange.bind(this);
+    this.state = {loggedIn: true};
     this.handleLogin  = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
-
-  //handleLoginChange(newLoggedIn) {
-  //  //console.log("ShakespeareSinglePage login state " + newLoggedIn);
-  //  this.setState(loggedIn: newLoggedIn);
-  //  //console.log("ShakespeareSinglePage login state " + this.state.loggedIn);
-  //}
 
   handleLogin(e) {
     event.preventDefault();
@@ -296,7 +336,10 @@ class ShakespeareSinglePage extends React.Component {
       <div className="ShakespeareSinglePage">
         <NavigationBar />
         <br />
-        <GridComponent loggedIn={this.state.loggedIn} onLogin={this.handleLogin} onLogout={this.handleLogout} />
+        <GridComponent
+          loggedIn={this.state.loggedIn}
+          onLogin={this.handleLogin}
+          onLogout={this.handleLogout} />
       </div>
     );
   }
