@@ -207,6 +207,81 @@ class LoginLogout extends React.Component {
   }
 }
 
+// Plays by Category Accordion
+
+class PlayCategories extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+     <div className="container-fluid text-center justify-content-center position-relative top-0 start-25">
+      <div id="playCategories" className="play-categories">
+        <h1>Shakespeare Plays by Category</h1>
+        <div id="playCategoryComedy" className="accordion-item">
+          <h2 className="accordion-header">
+            <button className="accordion-button d-block text-center text-primary fs-3 fw-bold collapsed" type="button"
+              data-bs-toggle="collapse" data-bs-target="#collapseComedies"
+              aria-expanded="false" aria-controls="collapseComedies">
+              Comedies
+            </button>
+          </h2>
+          <div id="collapseComedies" className="accordion-collapse collapse show"
+            data-bs-parent="#playCategories">
+            <div className="accordion-body">
+              "All's Well That Ends Well", "As You Like It", "Comedy of Errors",
+              "Love's Labour's Lost", "Measure for Measure", "Merchant of Venice",
+              "Merry Wives of Windsor", "Midsummer Night's Dream",
+              "Much Ado About Nothing", "Taming of the Shrew", "Tempest",
+              "Twelfth Night", "Two Gentlemen of Verona", "Winter's Tale"
+            </div>
+          </div>
+        </div>
+        <div id="playCategoryHistory" className="accordion-item">
+          <h2 className="accordion-header">
+            <button className="accordion-button d-block text-center text-primary fs-3 fw-bold collapsed" type="button"
+              data-bs-toggle="collapse" data-bs-target="#collapseHistories"
+              aria-expanded="false" aria-controls="collapseHistories">
+              Histories
+            </button>
+          </h2>
+          <div id="collapseHistories" className="accordion-collapse collapse"
+            data-bs-parent="#playCategories">
+            <div className="accordion-body">
+              "Henry IV, Part 1", "Henry IV, Part 1", "Henry V",
+              "Henry VI, Part 1", "Henry VI, Part 2", "Henry VI, Part 3",
+              "Henry VIII", "King John", "Pericles", "Richard II", "Richard III"
+            </div>
+          </div>
+        </div>
+        <div id="playCategoryTragedy" className="accordion-item">
+          <h2 className="accordion-header">
+            <button className="accordion-button d-block text-center text-primary fs-3 fw-bold collapsed" type="button"
+              data-bs-toggle="collapse" data-bs-target="#collapseTragedies"
+              aria-expanded="false" aria-controls="collapseTragedies"
+              align-self-center="true">
+              Tragedies
+            </button>
+          </h2>
+          <div id="collapseTragedies" className="accordion-collapse collapse"
+            data-bs-parent="#playCategories">
+            <div className="accordion-body fst-italic">
+              "Anthony and Cleopatra", "Coriolanus", "Cymbeline",
+              "Hamlet", "Julius Caesar", "King Lear", "Macbeth",
+              "Othello", "Romeo and Juliet", "Timon of Athens",
+              "Titus Andronicus", "Troilus and Cressida"
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+    );
+  }
+
+}
+
 // Image Carousel
 
 class ImageCarousel extends React.Component {
@@ -242,7 +317,8 @@ class ImageCarousel extends React.Component {
 
   renderControlPrev() {
     return (
-      <button className="carousel-control-prev" type="button" data-bs-target={this.carouselIdRef} data-bs-slide="prev">
+      <button className="carousel-control-prev" type="button"
+        data-bs-target={this.carouselIdRef} data-bs-slide="prev">
         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
         <span className="visually-hidden">Previous</span>
       </button>
@@ -251,7 +327,8 @@ class ImageCarousel extends React.Component {
 
   renderControlNext() {
     return (
-      <button className="carousel-control-next" type="button" data-bs-target={this.carouselIdRef} data-bs-slide="next">
+      <button className="carousel-control-next" type="button" 
+        data-bs-target={this.carouselIdRef} data-bs-slide="next">
         <span className="carousel-control-next-icon" aria-hidden="true"></span>
         <span className="visually-hidden">Next</span>
       </button>
@@ -260,10 +337,10 @@ class ImageCarousel extends React.Component {
 
   render() {
 
-    const renderedImageList = this.renderImages();
+    const renderedImageList      = this.renderImages();
     const renderedIndicatorsList = this.renderIndicators();
-    const renderedControlPrev = this.renderControlPrev();
-    const renderedControlNext = this.renderControlNext();
+    const renderedControlPrev    = this.renderControlPrev();
+    const renderedControlNext    = this.renderControlNext();
     return (
       <div className="container text-center position-relative top-0 start-25">
         <div id={this.carouselId} className="carousel slide">
@@ -366,10 +443,9 @@ class ShakespeareSinglePage extends React.Component {
 
     const imageFileList = this.state.imageDictionary[this.state.loggedInAs];
 
-    const MainContent =
+    const imageContent =
       this.state.loggedInAs ?
         <div className="container-fluid text-center position-relative top-0 start-25">
-          <br />
           Here are your uploaded images
           <ImageCarousel imageFileList={imageFileList} />
         </div> :
@@ -385,7 +461,10 @@ class ShakespeareSinglePage extends React.Component {
           loggedInAs={this.state.loggedInAs}
           onLogin={this.handleLogin}
           onLogout={this.handleLogout} />
-        {MainContent}
+        <br />
+        <PlayCategories />
+        <br />
+        {imageContent}
       </div>
     );
   }

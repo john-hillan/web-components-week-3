@@ -35,3 +35,8 @@
    color: red;
    margin: 0;
 }
+
+.play-categories {
+  background-color: lightgreen;
+  outline-style: solid;
+}
